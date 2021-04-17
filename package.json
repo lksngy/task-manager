@@ -1,0 +1,23 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "description": "https://www.udemy.com/course/the-complete-nodejs-developer-course-2/learn/lecture/13729150#questions/13909022",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lksngy/task-manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lksngy/task-manager/issues"
+  },
+  "homepage": "https://github.com/lksngy/task-manager#readme",
+  "dependencies": {
+    "mongodb": "^3.6.6"
+  }
+}
