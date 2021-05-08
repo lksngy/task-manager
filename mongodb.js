@@ -4,6 +4,7 @@
 const mongodb = require('mongodb')
 // getting access to the db functions to operate the CRUDs
 const MongoClient = mongodb.MongoClient
+const ObjectID = mongodb.ObjectID
 
 // connection URL
 const connectionURL = 'mongodb://127.0.0.1:27017'
@@ -16,12 +17,44 @@ const databaseName = 'task-manager'
 // row/record vs document
 // column vs field
 
+//// Creating own IDs
+// const id = new ObjectID()
+// console.log(id)
+// console.log(id.getTimestamp())
+
 // two arguments passed: 1- to parse url correctly, 2-callback function - to connect to the db - async operation 
 MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => {
     if (error) {
         return console.log('Unable to connect to the database')
     }
     const db = client.db(databaseName)
+
+    // Updating documents using promise, not callback
+    db.collection('users').updateOne({
+        _id: new ObjectID("60964d5e6db0dc8e1b339198")
+    }, {
+        $set: {
+            name: 'Kamilek'
+        }
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
+    })
+    
+
+    // // find one user
+    // db.collection('users').findOne({ name: 'Jen'}, (error, user) => {
+    //     if (error) {
+    //         return console.log('Unable to fetch')
+    //     }
+    //     console.log(user)
+    // })
+
+    // // find all users 29 yo
+    // db.collection('users').find({ age: 29}).toArray((error, users) => {
+    //     console.log(users)
+    // })
 
     // //first insert
     // db.collection('users').insertOne({
@@ -49,6 +82,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     //     console.log(result.ops)
     // })
 
+    //// challenge to create a new collection and insert a few documents
     // db.collection('tasks').insertMany([{
     //     description: 'Learn basics of HTML, CSS, JS',
     //     completed: true
