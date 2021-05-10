@@ -29,18 +29,26 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     }
     const db = client.db(databaseName)
 
-    // Update many - using promise
-    db.collection('tasks').updateMany({
-        completed: false
-    }, {
-        $set: {
-            completed: true
-        }
+    db.collection('users').deleteMany({
+        age: 27
     }).then((result) => {
         console.log(result)
     }).catch((error) => {
         console.log(error)
     })
+
+    // // Update many - using promise
+    // db.collection('tasks').updateMany({
+    //     completed: false
+    // }, {
+    //     $set: {
+    //         completed: true
+    //     }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
 
     // // Updating documents using promise, not callback
     // db.collection('users').updateOne({
