@@ -29,18 +29,31 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true}, (error, client) => 
     }
     const db = client.db(databaseName)
 
-    // Updating documents using promise, not callback
-    db.collection('users').updateOne({
-        _id: new ObjectID("60964d5e6db0dc8e1b339198")
+    // Update many - using promise
+    db.collection('tasks').updateMany({
+        completed: false
     }, {
         $set: {
-            name: 'Kamilek'
+            completed: true
         }
     }).then((result) => {
         console.log(result)
     }).catch((error) => {
         console.log(error)
     })
+
+    // // Updating documents using promise, not callback
+    // db.collection('users').updateOne({
+    //     _id: new ObjectID("60964d5e6db0dc8e1b339198")
+    // }, {
+    //     $inc: {
+    //         age: 1
+    //     }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
     
 
     // // find one user
