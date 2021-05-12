@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/lksngy/task-manager#readme",
   "dependencies": {
-    "mongodb": "^3.6.6"
+    "mongodb": "^3.6.6",
+    "mongoose": "^5.12.8",
+    "validator": "^13.6.0"
   }
 }
