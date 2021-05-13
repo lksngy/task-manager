@@ -1,3 +1,5 @@
+// to be deleted from the task-manager app - no longer needed
+
 // CRUD operations => create, read , update, delete database entries
 
 // mongodb npm driver
