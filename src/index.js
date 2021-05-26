@@ -58,6 +58,30 @@ app.post('/tasks', (req, res) => {
     })
 })
 
+// route handler for fetching multiple tasks
+app.get('/tasks', (req, res) => {
+    Task.find({}).then((tasks) => {
+        res.send(tasks)
+    }).catch((e) => {
+        res.status(500).send()
+    })
+})
+
+// route handler for fetching one task
+app.get('/tasks/:id', (req, res) => {
+    const _id = req.params.id
+
+    Task.findById(_id).then((task) => {
+        if (!task) {
+            return res.status(404).send()
+        }
+
+        res.send(task)
+    }).catch((e) => {
+        res.status(500).send()
+    })
+})
+
 // basic server
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
