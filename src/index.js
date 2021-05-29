@@ -69,6 +69,36 @@ app.get('/users/:id', async (req, res) => {
     // })
 })
 
+//route for updating user
+app.patch('/users/:id', async (req, res) => {
+    const _id = req.params.id
+
+    //// VALIDATION OF UPDATES CAN BE DONE IN MANY DIFFERENT WAYS. 
+    //// WE CAN VALIDATE JSON DATA RECEIVING BEFORE WE DO ANYTHING WITH IT.
+    //// APPROACH BELOW IS JUST ONE WAY OF DOING THINGS.
+    //// ANY UPDATE IN DB WOULD HAVE TO BE MANUALLY CHANGED HERE...
+
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['name', 'email', 'password', 'age']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates!'})
+    }
+
+    try {
+        // not sure about the runValidators: true - other is obvious
+        const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        if (!user) {
+            return res.status(404).send()
+        }
+        res.send(user)
+
+    } catch (e) {
+        res.status(400).send()
+    }
+})
+
 //route for creating and saving new task
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body)
@@ -128,6 +158,29 @@ app.get('/tasks/:id', async (req, res) => {
     // }).catch((e) => {
     //     res.status(500).send()
     // })
+})
+
+app.patch('/tasks/:id', async (req, res) => {
+
+//// VALIDATION EXAMPLE AS FOR THE USER => PROBABLY NOT A BEST PRACTICE, BUT BETTER THAN NOTHING
+    const _id = req.params.id
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['description', 'completed']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+    
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid Updates of the Task!'})
+    }
+    
+    try {
+        const task = await Task.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true})
+        if (!task) {
+            return res.status(404).send()
+        }
+        res.status(200).send(task)
+    } catch (e) {
+        res.status(400).send( { error: 'Not good!'})
+    }
 })
 
 // basic server
