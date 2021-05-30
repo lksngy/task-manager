@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
@@ -30,7 +31,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 7,
-        lowercase: true,
         validate(value) {
             if (value.toLowerCase().includes('password')) {
                 throw new Error ('Password cannot include this word!')
@@ -55,7 +55,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
         throw new Error('Unable to login')
     }
 
-    const isMatch = await bcrypt.compare(email, user.email)
+    const isMatch = await bcrypt.compare(password, user.password)
     console.log(isMatch)
     console.log(user.password)
 
