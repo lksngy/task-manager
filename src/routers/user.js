@@ -63,7 +63,6 @@ router.get('/users/:id', async (req, res) => {
 
 //route handler for updating one user (U)
 router.patch('/users/:id', async (req, res) => {
-    const _id = req.params.id
 
     //// VALIDATION OF UPDATES CAN BE DONE IN MANY DIFFERENT WAYS. 
     //// WE CAN VALIDATE JSON DATA RECEIVING BEFORE WE DO ANYTHING WITH IT.
@@ -74,20 +73,26 @@ router.patch('/users/:id', async (req, res) => {
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
+
     if (!isValidOperation) {
         return res.status(400).send({ error: 'Invalid updates!'})
     }
 
     try {
-        // not sure about the runValidators: true - other is obvious
-        const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true })
+        const user = await User.findById(req.params.id)
+        console.log(user)
+
+        updates.forEach((update) => user[update] = req.body[update])
+        console.log(user)
+        await user.save()   
+
         if (!user) {
             return res.status(404).send()
         }
         res.send(user)
 
     } catch (e) {
-        res.status(400).send()
+        res.status(400).send({ error: 'What are you trying to do?'})
     }
 })
 
