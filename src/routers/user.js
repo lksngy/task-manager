@@ -18,6 +18,17 @@ router.post('/users', async (req, res) => {
 
 })
 
+// route handler for login of the user
+router.post('/users/login', async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        res.send(user)
+    } catch (e) {
+        res.status(400).send()
+    }
+
+})
+
 // route handler for fetching multiple users (R)
 router.get('/users', async (req, res) => {
     

@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 
 // creating separate schema, that is by default happening behind the scenes => so we can use middleware to check 
 // password before saving it.
-// before putting it into userSchema, it was separate
+// before putting it into userSchema, it was separatec
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -48,8 +48,25 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-//needs to use normal function, not arrow one because of 'this' usage
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
+    console.log(user)
+    if (!user) {
+        throw new Error('Unable to login')
+    }
 
+    const isMatch = await bcrypt.compare(email, user.email)
+    console.log(isMatch)
+    console.log(user.password)
+
+    if (!isMatch) {
+        throw new Error('Unable to login')
+    }
+
+    return user
+}
+
+//needs to use normal function, not arrow one because of 'this' usage
 userSchema.pre('save', async function (next) {
     const user = this
 
