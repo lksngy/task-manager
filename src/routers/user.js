@@ -1,6 +1,7 @@
 const express = require('express')
 const User = require('../models/user')
 const router = new express.Router()
+const auth = require('../middleware/auth')
 
 
 /// here are different routes handling user's action in the web browser - CRUD operations
@@ -36,15 +37,17 @@ router.post('/users/login', async (req, res) => {
 
 })
 
-// route handler for fetching multiple users (R)
-router.get('/users', async (req, res) => {
+// route handler for fetching data about the user
+router.get('/users/me', auth, async (req, res) => {
     
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (e) {
-        res.status(500).send()
-    }
+    res.send(req.user)
+
+    // try {
+    //     const users = await User.find({})
+    //     res.send(users)
+    // } catch (e) {
+    //     res.status(500).send()
+    // }
 
     // User.find({}).then((users) => {
     //     res.send(users)
