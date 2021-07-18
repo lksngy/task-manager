@@ -37,6 +37,31 @@ router.post('/users/login', async (req, res) => {
 
 })
 
+// route handler to logout a session
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+        await req.user.save()
+
+        req.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// route handler to logout from all sessions
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = []
+        await req.user.save()
+        req.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 // route handler for fetching data about the user
 router.get('/users/me', auth, async (req, res) => {
     
